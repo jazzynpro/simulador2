@@ -15,7 +15,7 @@ function ocultarSecciones(){
   let listaClass = componente.classList; //recupera la lista de clases del componente
     listaClass.remove("activa"); //elimina la clase
 
-  let componente2 = document.getElementById("parametros"); //recupera el componente
+  let componente2 = document.getElementById("clientes"); //recupera el componente
   let listaClass2 = componente2.classList; //recupera la lista de clases del componente
     listaClass2.remove("activa"); //elimina la clase
 }
@@ -27,7 +27,7 @@ function mostrarSeccion(id){
   listaClass.add("activa");
 }
 function guardarTasa(){
-  let tasa = recuperarInt("tasaInteres");
+  let tasa = recuperarFloat("tasaInteres");
   if(tasa>=10 && tasa<=20){
     mostrarTexto("mensajeTasa", "Tasa configurada correctamente: "+tasa+"%")
   }else{
@@ -84,7 +84,7 @@ function pintarClientes(){
               "<td>"+elementosTabla.apellido + "</td>"+
               "<td>"+elementosTabla.ingresos + "</td>"+
               "<td>"+elementosTabla.egresos + "</td>"+
-              "<td><button onclick='seleccionarCliente("+ elementosTabla.cedula +")'>Actualizar</button>"+"<button>"+'Eliminar'+"</button></td>"+      
+               "<td><button onclick='seleccionarCliente("+ elementosTabla.cedula +")'>Actualizar</button>"+"<button>"+'Eliminar'+"</button></td>"+      
               "</tr>";      
   }
   tabla.innerHTML = filaTabla;
@@ -112,4 +112,22 @@ function limpiar(){
     document.getElementById("txtEgresos").value = "";
 }
  
- 
+function seleccionarCliente(cedula){
+  let resultado = buscarCliente(cedula);
+
+    if(resultado != null){
+
+        clienteSeleccionado = resultado;
+
+        mostrarTextoEnCaja("txtCedula", clienteSeleccionado.cedula);
+
+        mostrarTextoEnCaja("txtNombre", clienteSeleccionado.nombre);
+
+        mostrarTextoEnCaja("txtApellido", clienteSeleccionado.apellido);
+
+        mostrarTextoEnCaja("txtIngresos", clienteSeleccionado.ingresos);
+
+        mostrarTextoEnCaja("txtEgresos", clienteSeleccionado.egresos);
+
+    }
+}
