@@ -18,6 +18,10 @@ function ocultarSecciones(){
   let componente2 = document.getElementById("clientes"); //recupera el componente
   let listaClass2 = componente2.classList; //recupera la lista de clases del componente
     listaClass2.remove("activa"); //elimina la clase
+
+   let componente3 = document.getElementById("credito"); //recupera el componente
+  let listaClass3 = componente3.classList; //recupera la lista de clases del componente
+    listaClass3.remove("activa"); //elimina la clase
 }
 
 function mostrarSeccion(id){
@@ -27,9 +31,10 @@ function mostrarSeccion(id){
   listaClass.add("activa");
 }
 function guardarTasa(){
-  let tasa = recuperarFloat("tasaInteres");
-  if(tasa>=10 && tasa<=20){
-    mostrarTexto("mensajeTasa", "Tasa configurada correctamente: "+tasa+"%")
+  tasaInteres = recuperarInt("tasaInteres");
+  
+  if(tasaInteres>=10 && tasaInteres<=20){
+    mostrarTexto("mensajeTasa", "Tasa configurada correctamente: "+tasaInteres+"%")
   }else{
     mostrarTexto("mensajeTasa", "La tasa debe estar entre 10% y 20%")
   }
@@ -131,3 +136,93 @@ function seleccionarCliente(cedula){
 
     }
 }
+
+function buscarClienteCredito(){
+
+    let cedula =
+    recuperaraTexto("buscarCedulaCredito");
+
+    let clienteEncontrado =
+    buscarCliente(cedula);
+
+    let divDatos =
+    document.getElementById("datosClienteCredito");
+
+    if(clienteEncontrado != null){
+
+       clienteSeleccionado = clienteEncontrado;
+
+        divDatos.innerHTML = 
+        "<h4>Datos del Cliente</h4>" +
+
+        "<p>Cédula: " + 
+        clienteEncontrado.cedula + "</p>" +
+
+        "<p>Nombre: " + 
+        clienteEncontrado.nombre + "</p>" +
+
+        "<p>Apellido: " + 
+        clienteEncontrado.apellido + "</p>" +
+
+        "<p>Ingresos: " + 
+        clienteEncontrado.ingresos + "</p>" +
+
+        "<p>Egresos: " + 
+        clienteEncontrado.egresos + "</p>";
+
+    }else{
+
+        divDatos.innerHTML =
+        "Cliente no encontrado";
+    }
+}
+function calcularCredito(){
+
+    let monto = recuperarFloat("montoCredito");
+
+    plazoCalculado = recuperarInt("plazoCredito");
+
+    let ingresos = clienteSeleccionado.ingresos;
+
+    let egresos = clienteSeleccionado.egresos;
+
+    let disponible = calcularDisponible(ingresos,egresos);
+
+    let capacidadPago = calcularCapacidadDePago(disponible);
+
+    let interes = calcularInteresSimple(monto,tasaInteres,plazoCalculado);
+
+    montoCalculado = calcularTotalPagar(monto,interes);
+
+    cuotaCalculada = calcularCuotaMensual(montoCalculado,plazoCalculado);
+
+    creditoAprobado = aprobarCredito(capacidadPago,cuotaCalculada);
+
+    let resultadoCredito = document.getElementById("resultadoCredito");
+
+    let mensajeResultado = "";
+
+    if(creditoAprobado == true){
+      mensajeResultado ="APROBADO";
+      resultadoCredito.className="aprobado";
+    }else{
+        mensajeResultado ="RECHAZADO";
+        resultadoCredito.className="rechazado";
+    }
+
+    resultadoCredito.innerHTML =
+
+    "Capacidad de pago: "
+    + capacidadPago + "<br>" +
+
+    "Total a pagar: "
+    + montoCalculado + "<br>" +
+
+    "Cuota mensual: "
+    + cuotaCalculada + "<br>" +
+
+    "RESULTADO: "
+    + mensajeResultado;
+}
+
+
