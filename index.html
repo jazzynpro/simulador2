@@ -16,6 +16,7 @@
   <button onclick="mostrarSeccion('clientes')">Clientes</button>
   <button onclick="mostrarSeccion('credito')">Créditos</button>
   <button onclick="mostrarSeccion('listaCreditos')">Créditos Registrados</button>
+  <button onclick="mostrarSeccion('acercaDeMi')">Acerca de Mi</button>
 </nav>
 
 <section id="parametros">
@@ -24,6 +25,12 @@
   <label>Tasa de interés:</label>
   <input type="number" id="tasaInteres" min="10" max="20" value="15">
   <span>%</span>
+
+  <br><br>
+
+  <label>Monto máximo:</label>
+
+  <input type="number" id="montoMaximo" min="1" max="10000" value="10000">
 
   <br>
   <button onclick="guardarTasa();">Guardar tasa</button>
@@ -37,8 +44,10 @@
   <input type="text" id="txtCedula" placeholder="Cédula">
   <input type="text" id="txtNombre" placeholder="Nombre " >
   <input type="text" id="txtApellido" placeholder="Apellido">
+  <input type="text" id="txtTelefono" placeholder="Telefono">
   <input type="number" id="txtIngresos" placeholder="Ingresos">
   <input type="number" id="txtEgresos" placeholder="Egresos">
+  
 
   <br>
 
@@ -51,6 +60,7 @@
         <th>Cédula</th>
         <th>Nombre</th>
         <th>Apellido</th>
+        <th>Telefono</th>
         <th>Ingresos</th>
         <th>Egresos</th>
         <th>Acciones</th>
@@ -61,6 +71,7 @@
           <td>1712345678</td>
           <td>Juan</td>
           <td>Pérez</td>
+          <td>0987445977</td>
           <td>1200</td>
           <td>500</td>
           <td>
@@ -72,8 +83,10 @@
           <td>1723456789</td>
           <td>María</td>
           <td>Gómez</td>
+          <td>0993483383</td>
           <td>1500</td>
           <td>600</td>
+          
           <td>
             <button>Actualizar</button>
             <button>Eliminar</button>
@@ -83,8 +96,10 @@
           <td>1734567890</td>
           <td>Carlos</td>
           <td>Ramírez</td>
+          <td>0958586315</td>
           <td>900</td>
           <td>350</td>
+          
           <td>
             <button>Actualizar</button>
             <button>Eliminar</button>
@@ -124,6 +139,7 @@
   <input type="text" id="buscarCedulaListado" placeholder="Busca la cédula" >
   <button onclick="buscarCreditosCliente()">Buscar</button>
   <button onclick="pintarCreditos(creditos)">Ver todos</button>
+  <button onclick="mostrarCreditosVIP()">Créditos VIP</button>
 
   <table>
     <thead>
@@ -131,6 +147,7 @@
         <th>Cédula</th>
         <th>Nombre</th>
         <th>Apellido</th>
+        <th>Teléfono</th>
         <th>Monto</th>
         <th>Tasa</th>
         <th>Plazo</th>
@@ -142,6 +159,7 @@
           <td>1712345678</td>
           <td>Juan</td>
           <td>Pérez</td>
+          <td>0987445977</td>
           <td>3000</td>
           <td>15%</td>
           <td>12 meses</td>
@@ -152,6 +170,7 @@
           <td>1723456789</td>
           <td>María</td>
           <td>Gómez</td>
+          <td>0993483383</td>
           <td>5000</td>
           <td>14%</td>
           <td>24 meses</td>
@@ -162,6 +181,7 @@
           <td>1734567890</td>
           <td>Carlos</td>
           <td>Ramírez</td>
+          <td>0958586315</td>
           <td>1500</td>
           <td>16%</td>
           <td>6 meses</td>
@@ -170,6 +190,22 @@
         </tr>
     </tbody>
   </table>
+</section>
+<section id="acercaDeMi" > 
+    <h1>ACERCA DE MI</h1>
+
+    <h4>Nombre:</h4>
+    <p>Mi nombre es Cynthia Jazmin Cacuango Pujota</p>
+    <h4>Carrera:</h4>
+    <p>La carrera que me encuentro estudiando es Tecnología en Programación.</p>
+    <h4>Frase personal:</h4>
+    <p>Mi frase de motivacion personal es: ¡Puedes hacerlo Cynthia!, me ha animado en varias ocaciones para finalizar tareas que creo que son imposibles o a salir de apuros, creo que el creer en mi misma me ayuda a continuar de una manera positiva y firme mi camino.</p>
+    <h4>Foto:</h4>
+    <img src="cynthia.png" width="300px"></img>
+    <h4>Informacion Adicional:</h4>
+    <p>Hasta el momento ha sido complicado pero ha sido una experiencia de mucho aprendizaje todo lo que hemos visto en este modulo, espero con ansias el siguiente e igualmente poder continuar aprendiendo mas sobre programación. </p>
+
+
 </section>
 
 

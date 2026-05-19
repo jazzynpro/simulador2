@@ -2,6 +2,7 @@
   let creditos = [];
 
   let tasaInteres = 15;
+  let montoMaximo = 10000;  //let del monto maximo
   let clienteSeleccionado = null;
   let cuotaCalculada = 0;
   let montoCalculado = 0;
@@ -26,6 +27,10 @@ function ocultarSecciones(){
     let componente4 = document.getElementById("listaCreditos"); //recupera el componente
   let listaClass4 = componente4.classList; //recupera la lista de clases del componente
     listaClass4.remove("activa"); //elimina la clase
+
+    let componente5 = document.getElementById("acercaDeMi"); //recupera el componente
+  let listaClass5 = componente5.classList; //recupera la lista de clases del componente
+    listaClass5.remove("activa"); //elimina la clase
 }
 
 function mostrarSeccion(id){
@@ -36,6 +41,7 @@ function mostrarSeccion(id){
 }
 function guardarTasa(){
   tasaInteres = recuperarInt("tasaInteres");
+  montoMaximo = recuperarFloat("montoMaximo");
   
   if(tasaInteres>=10 && tasaInteres<=20){
     mostrarTexto("mensajeTasa", "Tasa configurada correctamente: "+tasaInteres+"%")
@@ -48,14 +54,16 @@ function guardarCliente(){
   let cedula = recuperaraTexto("txtCedula");
   let nombre = recuperaraTexto("txtNombre");
   let apellido = recuperaraTexto("txtApellido");
+  let telefono = recuperaraTexto("txtTelefono"); //recuperado del html txtTelefono
   let ingresos = recuperarFloat("txtIngresos");
   let egresos = recuperarFloat("txtEgresos");
 
-  let cliente ={};
+  let cliente ={}; //OBJETO CLIENTE
  
   cliente.cedula = cedula;
   cliente.nombre = nombre;
   cliente.apellido = apellido;
+  cliente.telefono = telefono; //telefono agregado al objeto CLIENTE
   cliente.ingresos = ingresos;
   cliente.egresos = egresos;
  
@@ -67,6 +75,7 @@ function guardarCliente(){
   } else{
     busqueda.nombre = nombre;
     busqueda.apellido = apellido;
+    busqueda.telefono = telefono; //agregar telefono a buscar cliente
     busqueda.ingresos = ingresos;
     busqueda.egresos = egresos;
     //clientesArreglo.push(busqueda);
@@ -91,13 +100,32 @@ function pintarClientes(){
               "<td>"+elementosTabla.cedula + "</td>"+
               "<td>"+elementosTabla.nombre + "</td>"+
               "<td>"+elementosTabla.apellido + "</td>"+
+              "<td>"+elementosTabla.telefono + "</td>"+ //agregar telefono a pintar
               "<td>"+elementosTabla.ingresos + "</td>"+
               "<td>"+elementosTabla.egresos + "</td>"+
-               "<td><button onclick='seleccionarCliente("+ elementosTabla.cedula +")'>Actualizar</button>"+"<button>"+'Eliminar'+"</button></td>"+      
+               "<td><button onclick='seleccionarCliente("+ elementosTabla.cedula +")'>Actualizar</button>"+"<button onclick='eliminarCliente("+ elementosTabla.cedula +")'>Eliminar</button></td>"+      
               "</tr>";      
   }
   tabla.innerHTML = filaTabla;
 }
+
+function eliminarCliente(cedula){ //funcion para eliminar los clientes agregados 
+
+    for(let i = 0; i < clientesArreglo.length; i++){
+
+        let clienteActual = clientesArreglo[i];
+
+        if(clienteActual.cedula == cedula){
+
+            clientesArreglo.splice(i,1);
+
+            break;
+        }
+    }
+
+    pintarClientes();
+}
+
 function buscarCliente(cedula){
   let elementoTabla;
   let clienteEncontrado = null;
@@ -117,11 +145,12 @@ function limpiar(){
     document.getElementById("txtCedula").value = "";
     document.getElementById("txtNombre").value = "";
     document.getElementById("txtApellido").value = "";
+    document.getElementById("txtTelefono").value = ""; //agregar limpiar a telefono
     document.getElementById("txtIngresos").value = "";
     document.getElementById("txtEgresos").value = "";
 }
  
-function seleccionarCliente(cedula){
+function seleccionarCliente(cedula){ //busca al cliente en el arreglo y llena las cajas de texto
   let resultado = buscarCliente(cedula);
 
     if(resultado != null){
@@ -133,6 +162,8 @@ function seleccionarCliente(cedula){
         mostrarTextoEnCaja("txtNombre", clienteSeleccionado.nombre);
 
         mostrarTextoEnCaja("txtApellido", clienteSeleccionado.apellido);
+
+        mostrarTextoEnCaja("txtTelefono", clienteSeleccionado.telefono); // agregar Telefono a seleccionar cliente 
 
         mostrarTextoEnCaja("txtIngresos", clienteSeleccionado.ingresos);
 
@@ -168,6 +199,9 @@ function buscarClienteCredito(){
         "<p>Apellido: " + 
         clienteEncontrado.apellido + "</p>" +
 
+        "<p>Teléfono: " + 
+        clienteEncontrado.telefono + "</p>" + //Agregar telefono a BuscarClienteCredito
+
         "<p>Ingresos: " + 
         clienteEncontrado.ingresos + "</p>" +
 
@@ -182,7 +216,13 @@ function buscarClienteCredito(){
 }
 function calcularCredito(){
 
-    let monto = recuperarFloat("montoCredito");
+    let monto = recuperarFloat("montoCredito");  //se recupera el monto puesto por el usuario
+
+    if(monto > montoMaximo){       //se valida que no sea mayor al maximo
+      alert("El monto supera el máximo permitido");
+      mostrarTextoEnCaja("montoCredito",""); //se limpia la caja en caso de que sea mayor
+      return;
+    }
 
     plazoCalculado = recuperarInt("plazoCredito");
 
@@ -237,6 +277,8 @@ function asignarCredito(){
 
   credito.apellido = clienteSeleccionado.apellido;
 
+  credito.telefono = clienteSeleccionado.telefono; //agregar telefono a asignarCredito
+
   credito.monto = montoCalculado;
 
   credito.tasa = tasaInteres;
@@ -281,6 +323,8 @@ function pintarCreditos(creditos){
 
         "<td>" + creditoActual.apellido + "</td>" +
 
+        "<td>" + creditoActual.telefono + "</td>" + //agregar a pintar creditos telefono
+
         "<td>" + creditoActual.monto + "</td>" +
 
         "<td>" + creditoActual.tasa + "</td>" +
@@ -299,3 +343,21 @@ function pintarCreditos(creditos){
     pintarCreditos(creditosEncontrados);
   }
 
+//FUNCION PARA MOSTRAR LOS CREDITOS VIP
+function mostrarCreditosVIP(){  //funcion llamada desde html creditos VIP
+
+    let creditosVIP = []; //crea un arreglo vacio para guardar los creditos VIP
+
+    for(let i = 0; i < creditos.length; i++){ //recorre el arreglo con un FOR
+
+        let creditoActual = creditos[i]; //Obtiene un elemento del arreglo en la posicion i
+
+        if(creditoActual.monto > 5000){  //condicional de que el valor del credito sea mayor a 5000
+
+            creditosVIP.push(creditoActual); //añadir al arreglo lo que contiene la variable credito actual
+        }
+    }
+
+    pintarCreditos(creditosVIP); //pinta lo que esta en el arreglo creditosVIP
+
+}
